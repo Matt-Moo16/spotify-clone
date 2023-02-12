@@ -12,7 +12,14 @@ const scopes = [
 ]
 
 export const getTokenFromUrl = () => {
-    return window.location.hash
+    return window.location.href
+        .split('?')
+        .reduce((initial, item) => {
+            let parts = item.split('=')
+            console.log('this is parts', parts)
+            initial[parts[0]] = decodeURIComponent(parts[1])
+            return initial
+        }, {})
 }
 
 export const loginUrl = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=code&show_dialog=true`
