@@ -11,7 +11,7 @@ const scopes = [
     'user-modify-playback-state',
 ]
 
-export const getTokenFromUrl = () => {
+export const getCodeFromUrl = () => {
     return window.location.href
         .split('?')
         .reduce((initial, item) => {
