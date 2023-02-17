@@ -16,7 +16,6 @@ export const getCodeFromUrl = () => {
         .split('?')
         .reduce((initial, item) => {
             let parts = item.split('=')
-            console.log('this is parts', parts)
             initial[parts[0]] = decodeURIComponent(parts[1])
             return initial
         }, {})

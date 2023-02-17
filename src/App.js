@@ -3,18 +3,19 @@ import Login from './Login/Login'
 import { getCodeFromUrl } from './spotify'
 import SpotifyWebApi from 'spotify-web-api-js'
 import { Buffer } from 'buffer'
+import Player from './Player/Player'
 
 const spotify = new SpotifyWebApi()
 //dotenv.config()
 
 const App = () => {
   const [code, setCode] = useState(null);
+  const [token, setToken] = useState('')
 
   useEffect(() => {
     if (!code) {
       const urlObject = getCodeFromUrl()
       const _code = urlObject.code
-      console.log(process.env.REACT_APP_CLIENT_ID)
 
       if (_code) {
         setCode(_code)
@@ -39,9 +40,14 @@ const App = () => {
 
         fetch('https://accounts.spotify.com/api/token', requestOptions)
           .then(response => response.json())
-          .then(data => console.log(data))
+          .then(data => {
+            setToken(data.access_token)
+            spotify.setAccessToken(data.access_token)
+            spotify.getMe().then((user) => {
+              console.log(user)
+            })
+          })
       }
-      console.log('I HAVE A code', code)
     }
   }, [])
 
@@ -49,7 +55,7 @@ const App = () => {
     <div>
       {
         code ? (
-          <h1>I am logged in</h1>
+          <Player />
         ) : (
           <Login />
         )
