@@ -4,13 +4,15 @@ import { getCodeFromUrl } from './spotify'
 import SpotifyWebApi from 'spotify-web-api-js'
 import { Buffer } from 'buffer'
 import Player from './Player/Player'
+import { useStateProviderValue } from './StateProvider'
 
 const spotify = new SpotifyWebApi()
-//dotenv.config()
 
 const App = () => {
   const [code, setCode] = useState(null);
   const [token, setToken] = useState('')
+
+  const [{user}, dispatch] = useStateProviderValue()
 
   useEffect(() => {
     if (!code) {
@@ -44,12 +46,17 @@ const App = () => {
             setToken(data.access_token)
             spotify.setAccessToken(data.access_token)
             spotify.getMe().then((user) => {
-              console.log(user)
+              dispatch({
+                type: 'SET_USER',
+                user: user,
+              })
             })
           })
       }
     }
   }, [])
+
+  console.log(user)
 
   return (
     <div>
