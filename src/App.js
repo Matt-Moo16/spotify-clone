@@ -10,9 +10,8 @@ const spotify = new SpotifyWebApi()
 
 const App = () => {
   const [code, setCode] = useState(null);
-  const [token, setToken] = useState('')
 
-  const [{user}, dispatch] = useStateProviderValue()
+  const [{user, token}, dispatch] = useStateProviderValue()
 
   useEffect(() => {
     if (!code) {
@@ -43,20 +42,22 @@ const App = () => {
         fetch('https://accounts.spotify.com/api/token', requestOptions)
           .then(response => response.json())
           .then(data => {
-            setToken(data.access_token)
-            spotify.setAccessToken(data.access_token)
-            spotify.getMe().then((user) => {
-              dispatch({
-                type: 'SET_USER',
-                user: user,
-              })
+            dispatch({
+              type: 'SET_TOKEN',
+              token: data.access_token,
             })
+            spotify.setAccessToken(data.access_token)
           })
+
+        spotify.getMe().then((user) => {
+          dispatch({
+            type: 'SET_USER',
+            user: user,
+          })
+        }) 
       }
     }
   }, [])
-
-  console.log(user)
 
   return (
     <div>
