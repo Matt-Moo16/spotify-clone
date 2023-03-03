@@ -6,12 +6,13 @@ import { Buffer } from 'buffer'
 import Player from './Player/Player'
 import { useStateProviderValue } from './StateProvider'
 
+
 const spotify = new SpotifyWebApi()
 
 const App = () => {
   const [code, setCode] = useState(null);
 
-  const [{user, token}, dispatch] = useStateProviderValue()
+  const [{user, token, playlists}, dispatch] = useStateProviderValue()
 
   useEffect(() => {
     if (!code) {
@@ -42,24 +43,33 @@ const App = () => {
         fetch('https://accounts.spotify.com/api/token', requestOptions)
           .then(response => response.json())
           .then(data => {
+            spotify.setAccessToken(data.access_token)
             dispatch({
               type: 'SET_TOKEN',
               token: data.access_token,
             })
-            spotify.setAccessToken(data.access_token)
-          })
 
-        spotify.getMe().then((user) => {
-          dispatch({
-            type: 'SET_USER',
-            user: user,
+            spotify.getMe().then((user) => {
+              dispatch({
+                type: 'SET_USER',
+                user: user
+              })
+            })
+
+            spotify.getUserPlaylists().then((playlists) => {
+              dispatch({
+                type: 'SET_PLAYLISTS',
+                playlists: playlists,
+              })
+            })
           })
-        }) 
       }
     }
   }, [])
 
+
   return (
+    
     <div>
       {
         code ? (

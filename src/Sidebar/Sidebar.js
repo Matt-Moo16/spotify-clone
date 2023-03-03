@@ -4,8 +4,12 @@ import './Sidebar.css'
 import HomeIcon from '@mui/icons-material/Home'
 import SearchIcon from '@mui/icons-material/Search';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import { useStateProviderValue } from '../StateProvider'
 
 const Sidebar = () => {
+
+    const [{ playlists }, dispatch] = useStateProviderValue()
+
   return (
     <div className='sidebar'>
       <img
@@ -20,6 +24,10 @@ const Sidebar = () => {
       <br />
       <strong className='sidebarTitle'>PLAYLISTS</strong>
       <hr />
+
+      {playlists?.items?.map(playlist => (
+        <SidebarOption title={playlist.name} />
+      ))}
     </div>
   )
 }
