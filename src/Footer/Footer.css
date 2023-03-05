@@ -11,6 +11,10 @@
 
 .footerLeft {
     flex: 0.3;
+    display: flex;
+    align-items: center;
+    color: white;
+    width: 300px;
 }
 
 .footerCenter {
@@ -29,4 +33,33 @@
     justify-content: space-between;
     align-items: center;
     color: white;
+}
+
+.footerAlbumLogo {
+    height: 60px;
+    width: 60px;
+    margin-right: 20px;
+    object-fit: contain;
+}
+
+.footerGreen {
+    color: #1ed15e;
+}
+
+.footerSongInfo h4 {
+    margin-bottom: 5px;
+}
+
+.footerSongInfo p {
+    font-size: 12px;
+}
+
+.footerIcon:hover,
+.footerGreen:hover {
+    transition: transform 0.2s ease-in-out;
+    transform: scale(1.2) !important;
+}
+
+.footerRight * .MuiSlider-root {
+    color: #1ed15e;
 }
